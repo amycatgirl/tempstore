@@ -49,11 +49,13 @@ export class TimedObject extends StorageObject implements ITimedObject {
     mimeType: string,
     filename: string,
     path: string,
-    amount_of_hours?: number
+    amount_of_hours: number = 1
   ) {
+    if (amount_of_hours > 5) throw new Error("You can only store files for 5 hours")
+
     super(id, mimeType, filename, path);
 
-    this.stored_until = Date.now() + (3600 * (amount_of_hours ?? 1) * 1000)
+    this.stored_until = Date.now() + (3600 * amount_of_hours * 1000)
     console.log
   }
 

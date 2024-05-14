@@ -23,7 +23,7 @@ const GetObjectRoute = GET("/objects/:id", async ({ params }) => {
 
     return OK(file, { "Content-type": object.mimeType });
   } catch (error) {
-    return InternalServerError({ message: error.message });
+    return InternalServerError({ message: "Error whilst opening file", error: error.message });
   }
 });
 

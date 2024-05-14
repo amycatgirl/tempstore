@@ -1,4 +1,4 @@
-import { BadRequest, Created, NotAcceptable } from "wren/response.ts";
+import { BadRequest, Created, InternalServerError, NotAcceptable } from "wren/response.ts";
 import { POST } from "wren/route.ts";
 import { StorageSingleton } from "../storage.ts";
 
@@ -11,7 +11,8 @@ const CreateObjectRoute = POST("/create", async (req) => {
   if (!file) {
     return BadRequest();
   } else if (file instanceof File) {
-    const { id, filename, stored_until } = await storage.storeFile(file, (until as number | undefined) ?? 1);
+    try {
+      const { id, filename, stored_until } = await storage.storeFile(file, (until as number | undefined) ?? 1);
 
     console.log(`[CREATE] File ${filename} was created`)
     return Created({
@@ -19,6 +20,9 @@ const CreateObjectRoute = POST("/create", async (req) => {
       filename,
       message: `Saved ${filename} until ${new Date(stored_until)}`,
     });
+    } catch(error) {
+      return InternalServerError({message: "Error whilst creating object", error: error.message})
+    }
   } else {
     return NotAcceptable();
   }
