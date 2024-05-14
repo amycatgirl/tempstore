@@ -1,7 +1,22 @@
-# Wren Example: Bare
+# Tempstore
+No nonsense, self-hostable temporary file service
 
-## Run
+## Usage
 
-```
-deno task start
-```
+### Create a new object/file
+
+Route: `/create`
+
+Method: `POST`
+
+Content Type: `multipart/form-data`
+
+Body
+- `file`: self-explanatory
+- `until`: Amount of time to store the file for (in hours)
+
+### Get object/file
+
+Route `/objects/:id`
+
+Method: `GET`
