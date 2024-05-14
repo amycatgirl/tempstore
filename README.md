@@ -2,8 +2,17 @@
 No nonsense, self-hostable temporary file service
 
 ## Running
+
+create a folder called `tmpst` at the root of this repository, then run
+
 ```
 just run
+```
+
+or 
+
+```
+deno task start
 ```
 
 ## Usage
