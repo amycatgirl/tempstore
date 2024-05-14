@@ -1,7 +1,7 @@
-# Tempstore
-No nonsense, self-hostable temporary file service
+# tempstore
+no nonsense, self-hostable temporary file service
 
-## Running
+## running
 
 create a folder called `tmpst` at the root of this repository, then run
 
@@ -15,22 +15,22 @@ or
 deno task start
 ```
 
-## Usage
+## usage
 
-### Create a new object/file
+### create a new object/file
 
-Route: `/create`
+route: `/create`
 
-Method: `POST`
+method: `POST`
 
-Content Type: `multipart/form-data`
+content Type: `multipart/form-data`
 
-Body
+body
 - `file`: self-explanatory
 - `until`: Amount of time to store the file for (in hours)
 
-### Get object/file
+### get object/file
 
-Route `/objects/:id`
+route `/objects/:id`
 
-Method: `GET`
+method: `GET`
