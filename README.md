@@ -1,6 +1,11 @@
 # Tempstore
 No nonsense, self-hostable temporary file service
 
+## Running
+```
+just run
+```
+
 ## Usage
 
 ### Create a new object/file
