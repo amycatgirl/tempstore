@@ -4,9 +4,15 @@ import { StorageSingleton } from "../storage.ts";
 
 const CreateObjectRoute = POST("/create", async (req) => {
   const form = await req.formData();
-  const file = form.get("file");
+  const file = form.get("file") ?? 1;
   const until: unknown = form.get("until");
   const storage = StorageSingleton.getInstance();
+
+  if (until && (until as number) > 5) {
+    return BadRequest({
+      message: "You can't store files for more than 5 hours."
+    })
+  }
 
   if (!file) {
     return BadRequest();
@@ -20,8 +26,8 @@ const CreateObjectRoute = POST("/create", async (req) => {
       filename,
       message: `Saved ${filename} until ${new Date(stored_until)}`,
     });
-    } catch(error) {
-      return InternalServerError({message: "Error whilst creating object", error: error.message})
+    } catch {
+      return InternalServerError({message: "Error whilst creating object"})
     }
   } else {
     return NotAcceptable();
