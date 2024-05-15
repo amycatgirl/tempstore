@@ -15,6 +15,10 @@ or
 deno task start
 ```
 
+a dockerfile is available for you to build, you need to expose port `5544` on podman/docker
+
+image builds coming soon
+
 ## usage
 
 ### create a new object/file
