@@ -21,6 +21,14 @@ image builds coming soon
 
 ## usage
 
+go to `localhost:5544`
+
+upload file
+
+use id with the `/object/:id` route (replace `:id` with your id)
+
+## API
+
 ### create a new object/file
 
 route: `/create`
