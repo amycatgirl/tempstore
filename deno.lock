@@ -1,5 +1,8 @@
 {
   "version": "3",
+  "redirects": {
+    "https://deno.land/x/html/mod.ts": "https://deno.land/x/html@v1.2.0/mod.ts"
+  },
   "remote": {
     "https://deno.land/std@0.175.0/async/abortable.ts": "73acfb3ed7261ce0d930dbe89e43db8d34e017b063cf0eaa7d215477bf53442e",
     "https://deno.land/std@0.175.0/async/deadline.ts": "b98e50d2c42399af03ad13bbb8cf59dadb9f0cd5d70648cc0c3b9202d75ab565",
@@ -134,6 +137,7 @@
     "https://deno.land/x/casualdb@v0.1.4/operator/types.ts": "7bcb17f278f204869c39569ed96b89954cd5ae8cd58bf74f30ff957dd97d92bf",
     "https://deno.land/x/casualdb@v0.1.4/operator/utils.ts": "39c1a98c3790f955030258229dc67c0892482917899364c7390511215bce94b6",
     "https://deno.land/x/casualdb@v0.1.4/writeWorker.ts": "faf846ede08e190a3329ef2a4537adcc7a4af53f24472545bddbe571d34d1176",
+    "https://deno.land/x/html@v1.2.0/mod.ts": "cf4a00358668309fd1b9814a338ddb7cc2c9af466eeab0d5937b09f2b6ffa724",
     "https://deno.land/x/lodash@4.17.15-es/_DataView.js": "0c4811491cd0c415553118f42f9b31112ed58bdb3941358a99deec9347e7a829",
     "https://deno.land/x/lodash@4.17.15-es/_Hash.js": "7221393e8931adc88430d3badefee1568ffccf91a6efcd9dda2be498f4a09551",
     "https://deno.land/x/lodash@4.17.15-es/_ListCache.js": "a8c13a041707d9c96eff21d95a78326b6e2af12b067527bcba22108ce15b600c",

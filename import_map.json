@@ -4,6 +4,7 @@
 		"wren/": "https://deno.land/x/wren@0.9.0/",
 		"ulid/": "https://deno.land/std@0.224.0/ulid/",
 		"path/": "https://deno.land/std@0.224.0/path/",
-		"fs/": "https://deno.land/std@0.224.0/fs/"
+		"fs/": "https://deno.land/std@0.224.0/fs/",
+		"html/": "https://deno.land/x/html/"
 	}
 }
