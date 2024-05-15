@@ -14,16 +14,19 @@ const GetObjectRoute = GET("/objects/:id", async ({ params }) => {
   if (!params) return BadRequest();
   if (!object) return NotFound();
 
-  console.log(`[GET] Found ${object.filename}, serving...`)
+  console.log(`[GET] Found ${object.filename}, serving...`);
 
   try {
     const file = await object.openFile();
 
-    if (!file) throw new Error(`Could not open file ${object.filename}`)
+    if (!file) throw new Error(`Could not open file ${object.filename}`);
 
     return OK(file, { "Content-type": object.mimeType });
   } catch (error) {
-    return InternalServerError({ message: "Error whilst opening file", error: error.message });
+    return InternalServerError({
+      message: "Error whilst opening file",
+      error: error.message,
+    });
   }
 });
 
