@@ -6,18 +6,20 @@ no nonsense, self-hostable temporary file service
 create a folder called `tmpst` at the root of this repository, then run
 
 ```
-just run
+DOMAIN="https://example.com" just run
 ```
 
 or 
 
 ```
-deno task start
+DOMAIN="https://example.com" deno task start
 ```
 
-a dockerfile is available for you to build, you need to expose port `5544` on podman/docker
+### docker/podman
 
-image builds coming soon
+an image for docker/podman containers is available at `ghcr.io/amycatgirl/tempstore:latest`
+
+set the `DOMAIN` environment variable to the domain you are using to host tempstore.
 
 ## usage
 
