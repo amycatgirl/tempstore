@@ -14,7 +14,7 @@ const UICreateObjectRoute = POST("/", async (req) => {
   const file = form.get("file");
   const until: unknown | number = form.get("until") ?? 1;
   const storage = StorageSingleton.getInstance();
-  const host = env["DOMAIN"] ?? "http://localhost:5544"
+  const host = env["DOMAIN"] ?? Deno.env.get("DOMAIN") ?? "http://localhost:5544"
 
   if (!file) {
     return BadRequest();
