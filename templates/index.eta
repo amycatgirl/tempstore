@@ -42,7 +42,9 @@
 
 			<button>Upload</button>
 		</form>
-		</div>
+
+        <code>made with love by amycatgirl - licensed under the mit license</code>
+ 		</div>
 
         <style>
             datalist {
