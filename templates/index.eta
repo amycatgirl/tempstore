@@ -1,6 +1,3 @@
-import { html } from "html/mod.ts"
-
-export const uploaderTemplate = html`
 	<body>
 		<pre>
          *                  *
@@ -30,11 +27,39 @@ export const uploaderTemplate = html`
 		<div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="file">Choose a file to upload</label>
-			<input type="file" id="file" name="file">
+			<input type="file" id="file" name="file"/>
+            <br />
+            <p>Store for:</p>
+            <input type="range" min="1" max="5" id="until" name="until" list="rangemarkers" value="1"/>
+            <datalist id="rangemarkers">
+                <option value="1">1h</option>
+                <option value="2">2h</option>
+                <option value="3">3h</option>
+                <option value="4">4h</option>
+                <option value="5">5h</option>
+            </datalist>
 			<br/>
 
 			<button>Upload</button>
 		</form>
 		</div>
+
+        <style>
+            datalist {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                writing-mode: vertical-lr;
+                width: 200px;
+            }
+
+            option {
+              padding: 0;
+            }
+
+            input[type="range"] {
+              width: 200px;
+              margin: 0;
+            }
+        </style>
 	</body>
-`

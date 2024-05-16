@@ -1,0 +1,11 @@
+<html>
+        <body>
+                <p>Stored file <%= filename %>. The file will expire <% if (until > 1) {%>
+                        in <%= until %> hours
+                   <% } else { %>
+                        in an hour
+                   <% } %>
+                </p>
+                <p>The file is located on <code><%= host %>/objects/<%= id %></code></p>
+        </body>      
+</html>

@@ -7,12 +7,15 @@ import {
 import { POST } from "wren/route.ts";
 import { StorageSingleton } from "../storage.ts";
 import { html } from "html/mod.ts";
+import { eta } from "../eta.ts";
+import { env } from "../env.ts";
 
 const UICreateObjectRoute = POST("/", async (req) => {
   const form = await req.formData();
   const file = form.get("file");
-  const until: unknown = form.get("until") ?? 1;
+  const until: unknown | number = form.get("until") ?? 1;
   const storage = StorageSingleton.getInstance();
+  const host = env["DOMAIN"] ?? "http://localhost:5544"
 
   if (!file) {
     return BadRequest();
@@ -20,16 +23,17 @@ const UICreateObjectRoute = POST("/", async (req) => {
     try {
       const { id, filename } = await storage.storeFile(
         file,
-        until as number | undefined,
+        until as number,
       );
 
       console.log(`[CREATE] File ${filename} was created`);
-      return Created(`
-      Stored file "${filename}". The file will expire ${
-        (until as number) > 1 ? `in ${until}` : "an"
-      } hour${(until as number) > 1 ? "s" : ""}
-The file's id is: ${id}      
-      `.trim());
+      const renderedTemplate = eta.render("served", {
+        id,
+        filename,
+        until,
+        host
+      })
+      return Created(renderedTemplate, { "content-type": "text/html"});
     } catch (error) {
       return InternalServerError({
         message: "Error whilst creating object",
