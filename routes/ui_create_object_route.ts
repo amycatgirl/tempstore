@@ -6,7 +6,6 @@ import {
 } from "wren/response.ts";
 import { POST } from "wren/route.ts";
 import { StorageSingleton } from "../storage.ts";
-import { html } from "html/mod.ts";
 import { eta } from "../eta.ts";
 import { env } from "../env.ts";
 
