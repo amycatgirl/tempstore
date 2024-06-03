@@ -48,3 +48,7 @@ body
 route `/objects/:id`
 
 method: `GET`
+
+## demostration
+
+[simplescreenrecorder-2024-06-03_10.43.30.webm](https://github.com/amycatgirl/tempstore/assets/138383945/a97d85c7-729d-4e33-83fd-6c5af770d2fa)
