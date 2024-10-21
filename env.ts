@@ -1,3 +1,4 @@
-import { load } from "dotenv/mod.ts"
+import { load } from "dotenv";
 
-export const env = await load() 
+export const env = await load();
+

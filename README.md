@@ -1,17 +1,18 @@
 # tempstore
+
 no nonsense, self-hostable temporary file service
 
 ## running
 
 create a folder called `tmpst` at the root of this repository, then run
 
-```
+```bash
 DOMAIN="https://example.com" just run
 ```
 
-or 
+or
 
-```
+```bash
 DOMAIN="https://example.com" deno task start
 ```
 
@@ -40,6 +41,7 @@ method: `POST`
 content Type: `multipart/form-data`
 
 body
+
 - `file`: self-explanatory
 - `until`: Amount of time to store the file for (in hours)
 
