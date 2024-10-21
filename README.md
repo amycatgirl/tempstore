@@ -16,6 +16,12 @@ or
 DOMAIN="https://example.com" deno task start
 ```
 
+If you want to use a custom port, edit the `PORT` environment variable
+
+```bash
+PORT="3000" deno task start
+```
+
 ### docker/podman
 
 an image for docker/podman containers is available at `ghcr.io/amycatgirl/tempstore:latest`
@@ -34,7 +40,7 @@ use id with the `/object/:id` route (replace `:id` with your id)
 
 ### create a new object/file
 
-route: `/create`
+route: `/api/object`
 
 method: `POST`
 
@@ -47,7 +53,7 @@ body
 
 ### get object/file
 
-route `/objects/:id`
+route `/api/object/:id`
 
 method: `GET`
 
