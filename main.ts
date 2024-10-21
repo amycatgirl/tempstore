@@ -1,26 +1,31 @@
-import { serve } from 'wren/mod.ts';
-import CreateObjectRoute from "./routes/create_object.ts"
-import GetObjectRoute from "./routes/get_object.ts";
+import { Hono } from "hono";
+
 import { StorageSingleton } from "./storage.ts";
-import IndexRoute from "./routes/index_route.ts";
-import UICreateObjectRoute from "./routes/ui_create_object_route.ts";
 
-const storage = StorageSingleton.getInstance()
+import ApiRoutes from "./routes/api/index.ts";
+import Views from "./routes/views/index.ts";
+import { env } from "./env.ts";
 
-const routes = [
-	CreateObjectRoute,
-	GetObjectRoute,
-	IndexRoute,
-	UICreateObjectRoute
-];
+const app = new Hono();
 
-await storage.removeLeftovers()
+const storage = StorageSingleton.getInstance();
+
+await storage.removeLeftovers();
+
+app.route("/", Views);
+app.route("/api", ApiRoutes);
 
 setInterval(() => {
-	storage.manager.purgeExpired()
-}, 1000)
+  storage.manager.purgeExpired();
+}, 1000);
 
-serve(routes);
+Deno.serve(
+  {
+    port: parseInt(env["PORT"]) || 5544,
+    hostname: env["DOMAIN"] || "127.0.0.1",
+  },
+  app.fetch,
+);
 
 // Run on different port
 // serve(routes, { port: 3000 });

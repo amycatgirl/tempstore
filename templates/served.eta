@@ -6,6 +6,6 @@
                         in an hour
                    <% } %>
                 </p>
-                <p>The file is located on <code><%= host %>/objects/<%= id %></code></p>
+                <p>The file is located on <code><%= host %>/api/object/<%= id %></code></p>
         </body>      
 </html>

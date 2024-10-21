@@ -1,7 +1,7 @@
 import type { Nullable } from "./utilities.ts";
-import { ulid } from "ulid/mod.ts";
-import { join, resolve } from "path/mod.ts";
-import { emptyDir } from "fs/mod.ts";
+import { ulid } from "ulid";
+import { join, resolve } from "path";
+import { emptyDir } from "fs";
 
 interface IStorageObject {
   id: string;
@@ -49,14 +49,15 @@ export class TimedObject extends StorageObject implements ITimedObject {
     mimeType: string,
     filename: string,
     path: string,
-    amount_of_hours: number = 1
+    amount_of_hours: number = 1,
   ) {
-    if (amount_of_hours > 5) throw new Error("You can only store files for 5 hours")
+    if (amount_of_hours > 5)
+      throw new Error("You can only store files for 5 hours");
 
     super(id, mimeType, filename, path);
 
-    this.stored_until = Date.now() + (3600 * amount_of_hours * 1000)
-    console.log
+    this.stored_until = Date.now() + 3600 * amount_of_hours * 1000;
+    console.log;
   }
 
   isExpired(): boolean {
@@ -67,7 +68,6 @@ export class TimedObject extends StorageObject implements ITimedObject {
 class ObjectManager {
   private storage: Array<ITimedObject> = [];
 
-
   addObject(object: StorageObject, until?: number): TimedObject {
     const newObject = new TimedObject(
       object.id,
@@ -76,8 +76,8 @@ class ObjectManager {
       object.path,
       until,
     );
-    
-    this.storage.push(newObject)
+
+    this.storage.push(newObject);
     return newObject;
   }
 
@@ -86,7 +86,7 @@ class ObjectManager {
   }
 
   findObject(key: string): Nullable<TimedObject> {
-    const obj = this.storage.find((ti) => ti.id == key)
+    const obj = this.storage.find((ti) => ti.id == key);
     return obj;
   }
 
@@ -97,7 +97,7 @@ class ObjectManager {
 
         console.log(`[DELETE] File ${value.filename} was deleted.`);
 
-        this.storage.splice(index, 1)
+        this.storage.splice(index, 1);
       }
     });
   }
@@ -128,7 +128,7 @@ class StorageManager {
   }
 
   async removeLeftovers() {
-    await emptyDir(this.ROOT_PATH)
+    await emptyDir(this.ROOT_PATH);
   }
 }
 

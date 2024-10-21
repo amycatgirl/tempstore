@@ -1,6 +1,14 @@
 {
-	"importMap": "./import_map.json",
-	"tasks": {
-		"start": "deno run -A -r main.ts"
-	}
+  "tasks": {
+    "start": "deno run -A -r main.ts"
+  },
+  "imports": {
+    "http": "jsr:@std/http@^1.0.8",
+    "ulid": "jsr:@std/ulid@^1.0.0",
+    "path": "jsr:@std/path@^1.0.6",
+    "dotenv": "jsr:@std/dotenv@^0.225.2",
+    "fs": "jsr:@std/fs@^1.0.4",
+    "eta": "jsr:@eta-dev/eta@^3.5.0",
+    "hono": "jsr:@hono/hono@^4.6.5"
+  }
 }

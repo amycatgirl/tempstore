@@ -1,10 +1,11 @@
-import { Eta } from "eta/src/index.ts";
-import { resolve } from "path/mod.ts";
+import { Eta } from "eta";
+import { resolve } from "path";
 
 const eta = new Eta({
-	views: resolve("./templates"),
-	cache: true,
-	useWith: true,	
-})
+  views: resolve("./templates"),
+  cache: true,
+  useWith: true,
+});
 
-export { eta }
+export { eta };
+
