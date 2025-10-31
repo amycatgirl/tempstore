@@ -138,4 +138,8 @@ func (s *Server) addRoutes() {
 	s.echo.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello world!")
 	})
+	s.echo.Static("/*", "static")
+
+	api := s.echo.Group("/api")
+	api.POST("/upload", handleUpload)
 }
