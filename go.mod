@@ -4,7 +4,10 @@ go 1.25.3
 
 require (
 	github.com/labstack/echo/v4 v4.13.4
+	github.com/oklog/ulid/v2 v2.1.1
 	github.com/samber/slog-echo v1.18.0
+	gorm.io/driver/sqlite v1.6.0
+	gorm.io/gorm v1.31.0
 )
 
 require (
@@ -14,7 +17,6 @@ require (
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-sqlite3 v1.14.32 // indirect
-	github.com/oklog/ulid/v2 v2.1.1 // indirect
 	github.com/samber/lo v1.51.0 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -26,6 +28,4 @@ require (
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
-	gorm.io/driver/sqlite v1.6.0 // indirect
-	gorm.io/gorm v1.31.0 // indirect
 )
