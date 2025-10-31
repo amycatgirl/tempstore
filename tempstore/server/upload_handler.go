@@ -4,15 +4,27 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
 
-func handleUpload(c echo.Context) error {
-	expiration_time := c.FormValue("until")
-	c.Logger().Debug("requested expiration time", "exp", expiration_time)
+func (s *Server) handleUpload(c echo.Context) error {
+	until := c.FormValue("until")
+	duration, err := time.ParseDuration(until + "h")
+	if err != nil {
+		return err
+	}
+
+	now := time.Now()
+	exptime := now.Add(duration)
+
 	file, err := c.FormFile("file")
 	if err != nil {
+		return err
+	}
+
+	if err := s.database.NewBlob(file.Filename, exptime); err != nil {
 		return err
 	}
 
@@ -23,7 +35,7 @@ func handleUpload(c echo.Context) error {
 
 	defer src.Close()
 
-	dst, err := os.Create("static/" + file.Filename)
+	dst, err := os.Create("files/" + file.Filename)
 	if err != nil {
 		return err
 	}
@@ -33,8 +45,5 @@ func handleUpload(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
-		"status":      "success",
-		"destination": c.Echo().Server.Addr + file.Filename,
-	})
+	return c.Redirect(http.StatusFound, "/files/"+file.Filename)
 }

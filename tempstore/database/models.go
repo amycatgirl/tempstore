@@ -9,11 +9,12 @@ import (
 type Blob struct {
 	ID                string
 	CreatedAt         time.Time
+	ExpiresAt         time.Time
 	CanonicalFilename string
 }
 
 func (b *Blob) resolvePath() string {
-	return "static/" + b.ID
+	return "files/" + b.CanonicalFilename
 }
 
 func (b *Blob) deleteUnderlyingFile() error {

@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/oklog/ulid/v2"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -52,7 +53,7 @@ func New(args *Args) (*Database, error) {
 
 func (db *Database) getExpiredBlobs() ([]Blob, error) {
 	var blobs []Blob
-	if err := db.db.Where("created_at < ?", time.Now()).Find(&blobs).Error; err != nil {
+	if err := db.db.Where("expires_at < ?", time.Now()).Find(&blobs).Error; err != nil {
 		return nil, fmt.Errorf("failed to query database: %w", err)
 	}
 
@@ -70,6 +71,20 @@ func (db *Database) DeleteExpiredBlobs() error {
 			return err
 		}
 		db.db.Delete(&blob)
+	}
+
+	return nil
+}
+
+func (db *Database) NewBlob(filename string, expires_at time.Time) error {
+	blob := &Blob{
+		ID:                ulid.Make().String(),
+		CanonicalFilename: filename,
+		ExpiresAt:         expires_at,
+	}
+
+	if err := db.db.Create(&blob).Error; err != nil {
+		return err
 	}
 
 	return nil

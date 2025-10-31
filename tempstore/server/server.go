@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"html/template"
+	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -32,6 +34,14 @@ type Args struct {
 	CheckInterval time.Duration
 }
 
+type templateRenderer struct {
+	templates *template.Template
+}
+
+func (t *templateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
 func New(args *Args) (*Server, error) {
 	level := slog.LevelInfo
 	if args.Debug {
@@ -42,10 +52,16 @@ func New(args *Args) (*Server, error) {
 		Level: level,
 	}))
 
+	renderer := templateRenderer{
+		templates: template.Must(template.ParseGlob("templates/*.html")),
+	}
+
 	e := echo.New()
 
 	e.Use(middleware.Recover())
 	e.Use(slogecho.New(logger))
+
+	e.Renderer = &renderer
 
 	httpd := http.Server{
 		Addr:    args.Addr,
@@ -195,10 +211,12 @@ func (s *Server) Serve() error {
 
 func (s *Server) addRoutes() {
 	s.echo.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello world!")
+		return c.Render(http.StatusOK, "index.html", nil)
 	})
-	s.echo.Static("/*", "static")
+	s.echo.Static("/files", "files")
+	s.echo.Static("/static", "static")
 
 	api := s.echo.Group("/api")
-	api.POST("/upload", handleUpload)
+	api.POST("/upload", s.handleUpload)
+	s.echo.POST("/", s.handleUpload) // html why
 }

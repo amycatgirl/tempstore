@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	temp_duration, err := time.ParseDuration("5m")
+	temp_duration, err := time.ParseDuration("30s")
 	if err != nil {
 		panic(fmt.Errorf("failed to parse duration: %w", err))
 	}
