@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/amycatgirl/tempstore/tempstore/database"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"
@@ -18,13 +19,17 @@ import (
 type Server struct {
 	echo *echo.Echo
 	// todo db
-	httpd  *http.Server
-	logger *slog.Logger
+	httpd         *http.Server
+	logger        *slog.Logger
+	database      *database.Database
+	checkInterval time.Duration
 }
 
 type Args struct {
-	Addr  string
-	Debug bool
+	DatabasePath  string
+	Addr          string
+	Debug         bool
+	CheckInterval time.Duration
 }
 
 func New(args *Args) (*Server, error) {
@@ -47,10 +52,21 @@ func New(args *Args) (*Server, error) {
 		Handler: e,
 	}
 
+	db, err := database.New(&database.Args{
+		DatabasePath: args.DatabasePath,
+		Debug:        args.Debug,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
 	s := Server{
-		httpd:  &httpd,
-		logger: logger,
-		echo:   e,
+		httpd:         &httpd,
+		logger:        logger,
+		echo:          e,
+		database:      db,
+		checkInterval: args.CheckInterval,
 	}
 
 	return &s, nil
@@ -58,6 +74,34 @@ func New(args *Args) (*Server, error) {
 
 // TODO: We want to also pass a context here, since we are going to have tasks running in the background as well!!
 func (s *Server) Serve() error {
+	shutdownTicker := make(chan struct{})
+	tickerShutdown := make(chan struct{})
+
+	go func() {
+		logger := s.logger.With("component", "delete-routine")
+		ticker := time.NewTicker(s.checkInterval)
+
+		go func() {
+			logger.Info("deleting expired files")
+
+			if err := s.database.DeleteExpiredBlobs(); err != nil {
+				logger.Info("error deleting expired files", "err", err)
+			}
+
+			for range ticker.C {
+				if err := s.database.DeleteExpiredBlobs(); err != nil {
+					logger.Info("deletion error", "err", err)
+				}
+			}
+
+			close(tickerShutdown)
+		}()
+
+		<-shutdownTicker
+
+		ticker.Stop()
+	}()
+
 	shutdownEcho := make(chan struct{})
 	echoShutdown := make(chan struct{})
 
@@ -108,6 +152,8 @@ func (s *Server) Serve() error {
 		s.logger.Warn("echo shutdown unexpectedly")
 	}
 
+	close(shutdownTicker)
+
 	forceShutdownSignals := make(chan os.Signal, 1)
 	signal.Notify(forceShutdownSignals, syscall.SIGINT, syscall.SIGTERM)
 
@@ -122,7 +168,20 @@ func (s *Server) Serve() error {
 		case <-time.After(5 * time.Second):
 			s.logger.Warn("echo did not shut down after 5 seconds, exiting forcefully")
 		case <-forceShutdownSignals:
-			s.logger.Warn("received forceful shutdown signal before echo shutdown")
+			s.logger.Warn("received forceful shutdown signal before echo shut down")
+		}
+	})
+
+	wg.Go(func() {
+		s.logger.Info("waiting up to 60 seconds for ticker to shut down")
+
+		select {
+		case <-tickerShutdown:
+			s.logger.Info("ticker shutdown gracefully")
+		case <-time.After(60 * time.Second):
+			s.logger.Warn("waited 60 seconds to shut down. forcefully exiting.")
+		case <-forceShutdownSignals:
+			s.logger.Warn("received forceful shutdown signal before ticker shut down")
 		}
 	})
 

@@ -1,13 +1,23 @@
 package main
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/amycatgirl/tempstore/tempstore/server"
 )
 
 func main() {
+	temp_duration, err := time.ParseDuration("5m")
+	if err != nil {
+		panic(fmt.Errorf("failed to parse duration: %w", err))
+	}
+
 	s, err := server.New(
 		&server.Args{
-			Addr: ":8080",
+			DatabasePath:  "tempstore.db",
+			Addr:          ":8080",
+			CheckInterval: temp_duration,
 		},
 	)
 

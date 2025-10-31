@@ -38,7 +38,7 @@ func New(args *Args) (*Database, error) {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 
-	if err := gormDB.AutoMigrate(); err != nil {
+	if err := gormDB.AutoMigrate(&Blob{}); err != nil {
 		return nil, fmt.Errorf("failed to apply migrations: %w", err)
 	}
 
@@ -52,7 +52,7 @@ func New(args *Args) (*Database, error) {
 
 func (db *Database) getExpiredBlobs() ([]Blob, error) {
 	var blobs []Blob
-	if err := db.db.Where("created_at < ?", time.Now).Find(&blobs).Error; err != nil {
+	if err := db.db.Where("created_at < ?", time.Now()).Find(&blobs).Error; err != nil {
 		return nil, fmt.Errorf("failed to query database: %w", err)
 	}
 
@@ -69,9 +69,8 @@ func (db *Database) DeleteExpiredBlobs() error {
 		if err := blob.deleteUnderlyingFile(); err != nil {
 			return err
 		}
+		db.db.Delete(&blob)
 	}
-
-	db.db.Delete(&blobs)
 
 	return nil
 }
