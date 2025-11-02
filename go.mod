@@ -6,6 +6,7 @@ require (
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/oklog/ulid/v2 v2.1.1
 	github.com/samber/slog-echo v1.18.0
+	github.com/urfave/cli/v3 v3.5.0
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.31.0
 )
@@ -18,8 +19,6 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-sqlite3 v1.14.32 // indirect
 	github.com/samber/lo v1.51.0 // indirect
-	github.com/stretchr/testify v1.11.1 // indirect
-	github.com/urfave/cli/v3 v3.5.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	go.opentelemetry.io/otel v1.29.0 // indirect
