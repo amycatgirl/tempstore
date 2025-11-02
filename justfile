@@ -1,2 +1,5 @@
-run:
-  deno run -A main.ts
+build:
+    go build cmd/tempstore/main.go
+
+run: build
+    go run cmd/tempstore/main.go
