@@ -5,87 +5,54 @@
         <link rel="stylesheet" href="/static/ui.css" />
     </head>
     <body>
-        <pre>
-                *                  *
-                    __                *
-                ,db'    *     *
-                ,d8/       *        *    *
-                888
-                \`db\       *     *
-                \`o\`_                    **
-            *               *   *    _      *
-                    *                 / )
-                *    (\__/) *       ( (  *
-            ,-.,-.,)    (.,-.,-.,-.) ).,-.,-.
-            | @|  ={      }= | @|  / / | @|o |
-            _j__j__j_)     \`-------/ /__j__j__j_
-            ________(               /___________
-            |  | @| \\              || o|O | @|
-            |o |  |,'\\       ,   ,'"|  |  |  |  hjw
-            vV\\|\/vV|\`-'\\  ,---\\   | \\Vv\\hjwVv\\//v
-                        _) )    \`. \ /
-                    (__/       ) )
-                                (_/
+        <main>
+            <header>
+                <h1>Tempstore</h1>
+            </header>
+            <div class="container">
+                <form method="post" enctype="multipart/form-data">
+                    <div>
+                        <label for="file">Choose a file to upload</label>
+                        <input type="file" id="file" name="file" />
+                    </div>
+                    <div>
+                        <label for="until">Store for:</label>
+                        <input
+                            type="range"
+                            min="1"
+                            max="5"
+                            id="until"
+                            name="until"
+                            list="ranges"
+                            value="1"
+                        />
+                        <datalist id="ranges">
+                            <option value="1">1h</option>
+                            <option value="2">2h</option>
+                            <option value="3">3h</option>
+                            <option value="4">4h</option>
+                            <option value="5">5h</option>
+                        </datalist>
+                    </div>
 
-        tempstore-go</pre
-        >
-        <br />
-        <h2 id="how-it-works">How it works</h2>
-        <p>
-            Files are only stored for the amount of time you set via the UI. 1
-            hour is the minimum amount of time. After that time passes, the file
-            will get deleted.
-        </p>
-        <div>
-            <form method="post" enctype="multipart/form-data">
-                <label for="file">Choose a file to upload</label>
-                <input type="file" id="file" name="file" />
-                <br />
-                <p>Store for:</p>
-                <input
-                    type="range"
-                    min="1"
-                    max="5"
-                    id="until"
-                    name="until"
-                    list="rangemarkers"
-                    value="1"
-                />
-                <datalist id="rangemarkers">
-                    <option value="1">1h</option>
-                    <option value="2">2h</option>
-                    <option value="3">3h</option>
-                    <option value="4">4h</option>
-                    <option value="5">5h</option>
-                </datalist>
-                <br />
+                    <button>Upload</button>
+                </form>
+            </div>
 
-                <button>Upload</button>
-            </form>
+            <div class="container">
+                <h2 id="how-it-works">How it works</h2>
+                <p>
+                    Files are only stored for the amount of time you set via the
+                    UI. 1 hour is the minimum amount of time. After that time
+                    passes, the file will get deleted.
+                </p>
+            </div>
 
-            <code
-                >made with love by amycatgirl - licensed under the mit
-                license</code
-            >
-        </div>
-
-        <style>
-            datalist {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                writing-mode: vertical-lr;
-                width: 200px;
-            }
-
-            option {
-                padding: 0;
-            }
-
-            input[type="range"] {
-                width: 200px;
-                margin: 0;
-            }
-        </style>
+            <div class="footer">
+                <code
+                    >made with love by amycatgirl - licensed under the mit license</code
+                >
+            </div>
+        </main>
     </body>
 </html>
