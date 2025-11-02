@@ -8,5 +8,8 @@ RUN go mod download
 COPY . .
 RUN go build -v -o /usr/local/bin/tempstore ./...
 
+# Ensure "files" directory is available before running
+RUN mkdir -p files
+
 # Default port is 5544
 CMD ["tempstore", "serve"]
