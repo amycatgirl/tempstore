@@ -89,7 +89,7 @@ func New(args *Args) (*Server, error) {
 }
 
 // TODO: We want to also pass a context here, since we are going to have tasks running in the background as well!!
-func (s *Server) Serve() error {
+func (s *Server) Serve(ctx context.Context) error {
 	shutdownTicker := make(chan struct{})
 	tickerShutdown := make(chan struct{})
 

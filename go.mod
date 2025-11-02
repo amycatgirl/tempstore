@@ -19,6 +19,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.32 // indirect
 	github.com/samber/lo v1.51.0 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
+	github.com/urfave/cli/v3 v3.5.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	go.opentelemetry.io/otel v1.29.0 // indirect
