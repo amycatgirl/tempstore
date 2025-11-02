@@ -1,2 +1,2 @@
 build:
-    go build cmd/tempstore/main.go -o tempstore
+    go build ./cmd/tempstore
