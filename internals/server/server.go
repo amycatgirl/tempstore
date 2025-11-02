@@ -12,7 +12,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/amycatgirl/tempstore/tempstore/database"
+	"github.com/amycatgirl/tempstore/internals/database"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"

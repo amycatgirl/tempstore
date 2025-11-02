@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/amycatgirl/tempstore/tempstore/server"
+	"github.com/amycatgirl/tempstore/internals/server"
 	"github.com/urfave/cli/v3"
 )
 
