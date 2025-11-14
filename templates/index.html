@@ -10,45 +10,39 @@
                 <h1>Tempstore</h1>
             </header>
             <div class="container">
-                <form method="post" enctype="multipart/form-data">
-                    <div>
+                <form class="centre" method="post" enctype="multipart/form-data">
+                    <div class="centre uploadbox">
                         <label for="file">Choose a file to upload</label>
                         <input type="file" id="file" name="file" />
                     </div>
-                    <div>
+                    <div class="centre storefor">
                         <label for="until">Store for:</label>
-                        <input
-                            type="range"
-                            min="1"
-                            max="5"
-                            id="until"
-                            name="until"
-                            list="ranges"
-                            value="1"
-                        />
-                        <datalist id="ranges">
-                            <option value="1">1h</option>
-                            <option value="2">2h</option>
-                            <option value="3">3h</option>
-                            <option value="4">4h</option>
-                            <option value="5">5h</option>
-                        </datalist>
+                        <br />
+                        <div class="centre time">
+                            <input
+                                type="range"
+                                min="1"
+                                max="5"
+                                id="until"
+                                name="until"
+                                list="ranges"
+                                value="1"
+                            />
+                            <datalist id="ranges">
+                                <option value="1">1h</option>
+                                <option value="2">2h</option>
+                                <option value="3">3h</option>
+                                <option value="4">4h</option>
+                                <option value="5">5h</option>
+                            </datalist>
+                        </div>
                     </div>
 
                     <button>Upload</button>
                 </form>
             </div>
 
-            <div class="container">
-                <h2 id="how-it-works">How it works</h2>
-                <p>
-                    Files are only stored for the amount of time you set via the
-                    UI. 1 hour is the minimum amount of time. After that time
-                    passes, the file will get deleted.
-                </p>
-            </div>
-
-            <div class="footer">
+            <div class="footer centre">
                 <code
                     >made with love by amycatgirl - licensed under the mit license</code
                 >
