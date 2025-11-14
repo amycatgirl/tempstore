@@ -1,0 +1,112 @@
+/* TODO */
+
+:root {
+    --background: oklch(13% 0.028 261.692);
+    --secondary: oklch(37.3% 0.034 259.733);
+    --tertiary: oklch(27.8% 0.033 256.848);
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: var(--background);
+    color: oklch(98.5% 0.002 247.839);
+    padding: 0;
+    margin: 0;
+    display: grid;
+    width: 100%;
+    height: 100dvh;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+    grid-template-areas: "a b c";
+}
+
+main {
+    display: block;
+    background-color: var(--tertiary);
+    align-self: center;
+    margin: 10px;
+    border-radius: 10px;
+    overflow: clip;
+
+    grid-area: b;
+
+    & header {
+        padding-inline: 10px;
+        padding-block: 5px;
+
+        margin-bottom: 1.5rem;
+
+        & h1 {
+            margin-block: 0px;
+            font-size: 1.3em;
+        }
+        background-color: var(--secondary);
+    }
+
+    & .container {
+        padding-inline: 5px;
+    }
+}
+datalist {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    writing-mode: vertical-lr;
+    width: 200px;
+}
+
+.centre {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+form {
+    gap: 1rem;
+}
+
+
+.time {
+    gap: .5rem;
+}
+
+option {
+    padding: 0;
+}
+
+.container {
+    margin-bottom: 1.5rem;
+}
+
+input[type="range"] {
+    width: 200px;
+    margin: 0;
+}
+
+.uploadbox {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+
+    border: 2px dashed white;
+    border-radius: 5%;
+    background: rgba(0, 0, 0, 30%);
+    aspect-ratio: 1/1;
+    width: 30%;
+
+    & label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 100%;
+    }
+    & input[type="file"] {
+        display: none; /* hide underlying component*/
+    }
+}
+
+.footer {
+    margin-bottom: .5rem;    
+}

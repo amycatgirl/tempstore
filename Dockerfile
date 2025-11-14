@@ -1,10 +1,15 @@
-FROM denoland/deno:alpine
+FROM golang:1.25
 
-RUN mkdir -p /www/tempstore
+WORKDIR /usr/src/tempstore
 
-WORKDIR /www/tempstore
-ADD . /www/tempstore/
+COPY go.mod go.sum ./
+RUN go mod download
 
-EXPOSE 5544
+COPY . .
+RUN go build -v -o /usr/local/bin/tempstore ./...
 
-CMD [ "deno", "task", "start" ]
+# Ensure "files" directory is available before running
+RUN mkdir -p files
+
+# Default port is 5544
+CMD ["tempstore", "serve"]
