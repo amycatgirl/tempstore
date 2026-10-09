@@ -76,16 +76,29 @@ func (db *Database) DeleteExpiredBlobs() error {
 	return nil
 }
 
-func (db *Database) NewBlob(filename string, expires_at time.Time) error {
+func (db *Database) NewBlob(filename string, expires_at time.Time) (string, error) {
+	id := ulid.Make().String()
+
 	blob := &Blob{
-		ID:                ulid.Make().String(),
+		ID:                id,
 		CanonicalFilename: filename,
 		ExpiresAt:         expires_at,
 	}
 
 	if err := db.db.Create(&blob).Error; err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return id, nil
+}
+
+func (db *Database) GetBlob(id string) (*Blob, error) {
+	var blob Blob
+	result := db.db.First(&blob, "id = ?", id)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &blob, nil
 }

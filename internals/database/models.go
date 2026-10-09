@@ -7,7 +7,7 @@ import (
 )
 
 type Blob struct {
-	ID                string
+	ID                string `gorm:"primaryKey"`
 	CreatedAt         time.Time
 	ExpiresAt         time.Time
 	CanonicalFilename string

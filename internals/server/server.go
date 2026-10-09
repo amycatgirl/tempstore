@@ -38,7 +38,7 @@ type templateRenderer struct {
 	templates *template.Template
 }
 
-func (t *templateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+func (t *templateRenderer) Render(w io.Writer, name string, data any, c echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
@@ -213,7 +213,7 @@ func (s *Server) addRoutes() {
 	s.echo.GET("/", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "index.html", nil)
 	})
-	s.echo.Static("/files", "files")
+	s.echo.GET("/files/:id", s.filesRoute)
 	s.echo.Static("/static", "static")
 
 	api := s.echo.Group("/api")

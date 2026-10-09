@@ -24,7 +24,8 @@ func (s *Server) handleUpload(c echo.Context) error {
 		return err
 	}
 
-	if err := s.database.NewBlob(file.Filename, exptime); err != nil {
+	file_id, err := s.database.NewBlob(file.Filename, exptime)
+	if err != nil {
 		return err
 	}
 
@@ -45,5 +46,5 @@ func (s *Server) handleUpload(c echo.Context) error {
 		return err
 	}
 
-	return c.Redirect(http.StatusFound, "/files/"+file.Filename)
+	return c.Redirect(http.StatusFound, "/files/"+file_id)
 }
