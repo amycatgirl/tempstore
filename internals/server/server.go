@@ -13,14 +13,14 @@ import (
 	"time"
 
 	"github.com/amycatgirl/tempstore/internals/database"
+	"github.com/amycatgirl/tempstore/web"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"
 )
 
 type Server struct {
-	echo *echo.Echo
-	// todo db
+	echo          *echo.Echo
 	httpd         *http.Server
 	logger        *slog.Logger
 	database      *database.Database
@@ -53,7 +53,7 @@ func New(args *Args) (*Server, error) {
 	}))
 
 	renderer := templateRenderer{
-		templates: template.Must(template.ParseGlob("templates/*.html")),
+		templates: template.Must(template.ParseFS(web.TemplatesFS, "templates/*.html")),
 	}
 
 	e := echo.New()
@@ -214,9 +214,8 @@ func (s *Server) addRoutes() {
 		return c.Render(http.StatusOK, "index.html", nil)
 	})
 	s.echo.GET("/files/:id", s.filesRoute)
-	s.echo.Static("/static", "static")
+	s.echo.StaticFS("/static", echo.MustSubFS(web.StaticFS, "static/"))
 
 	api := s.echo.Group("/api")
 	api.POST("/upload", s.handleUpload)
-	s.echo.POST("/", s.handleUpload) // html why
 }
