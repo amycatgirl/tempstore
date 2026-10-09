@@ -1,6 +1,7 @@
 /* TODO */
 
 :root {
+  --accent: #8800FF;
   --background: oklch(13% 0.028 261.692);
   --secondary: oklch(37.3% 0.034 259.733);
   --tertiary: oklch(27.8% 0.033 256.848);
@@ -12,12 +13,21 @@
   box-sizing: border-box;
 }
 
+a {
+  color: color-mix(in srgb, var(--accent) 100%, white 75%);
+  font-weight: 600;
+}
+
 body {
   display: flex;
 
   align-items: center;
   justify-content: center;
 
+  background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url(/static/assets/backdrop);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
   background-color: var(--background);
   color: oklch(98.5% 0.002 247.839);
   padding: 10px;
@@ -34,7 +44,7 @@ main {
   border-radius: 10px;
   overflow: clip;
 
-  grid-area: b;
+  min-width: 30rem;
 
   & header {
     padding-inline: 10px;
@@ -57,13 +67,17 @@ main {
 
 @media screen and (width < 600px) {
   body {
-    display: block;
+    display: flex;
     padding: 0;
   }
 
   main {
-    height: 100%;
+    width: 100%;
+    height: 75%;
+
+    align-self: end;
     border-radius: 0;
+    min-width: unset;
   }
 }
 
@@ -155,6 +169,14 @@ input[type="range"] {
 }
 
 footer {
+  display: inline-flex;
+
   margin-bottom: .5rem;
   text-align: center;
+}
+
+footer p {
+  font-size: 12px;
+  margin-bottom: .325rem;
+  margin-top: 0;
 }
