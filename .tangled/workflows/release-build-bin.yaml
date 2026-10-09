@@ -1,0 +1,80 @@
+engine: "microvm"
+image: nixos
+
+dependencies:
+  - go
+  - gcc
+
+environment:
+  CGO_ENABLED: 1
+
+when:
+  - event: ["push"]
+  - tag: ["v*"]
+
+cache:
+  - key: go-mod
+    hash:
+      - go.sum
+      - go.mod
+    paths:
+      - .gocache
+
+steps:
+  - name: build binary
+    command: |
+     mkdir -p dist
+     go build -o ./dist/tempstore ./cmd/tempstore
+  - name: publish artifact
+    command: |
+      set -euo pipefail
+      # change this if you're not on `tngl.sh`
+      PDS="https://eurosky.social"
+      # also update this to your handle or did
+      ATP_IDENTIFIER="did:plc:gijpvbkdbr56kazbdjhfvb3d"
+      ARTIFACT_PATH="dist/tempstore"
+      ARTIFACT_NAME="tempstore"
+
+      # set `ATP_APP_PASSWORD` under **Settings → Secrets**
+      session=$(curl -fsS -X POST "$PDS/xrpc/com.atproto.server.createSession" \
+        -H "Content-Type: application/json" \
+        -d "{\"identifier\":\"$ATP_IDENTIFIER\",\"password\":\"$ATP_APP_PASSWORD\"}")
+      jwt=$(echo "$session" | jq -r .accessJwt)
+      did=$(echo "$session" | jq -r .did)
+
+      # upload the binary as a blob
+      blob=$(curl -fsS -X POST "$PDS/xrpc/com.atproto.repo.uploadBlob" \
+        -H "Authorization: Bearer $jwt" \
+        -H "Content-Type: application/octet-stream" \
+        --data-binary @"$ARTIFACT_PATH")
+
+      # note that this requires an annotated tag (`git tag -a v1.0.0 -m ...`)
+      tag_hash=$(git rev-parse "$TANGLED_REF_NAME^{tag}")
+      tag_bytes=$(printf '%s' "$tag_hash" | xxd -r -p | base64 | tr -d '=')
+
+      # the sh.tangled.repo.artifact record for your artifact
+      record=$(jq -n \
+        --arg did "$did" \
+        --arg tag "$tag_bytes" \
+        --arg name "$ARTIFACT_NAME" \
+        --arg repo "$TANGLED_REPO_URL" \
+        --arg created "$(date -Iseconds)" \
+        --argjson blob "$(echo "$blob" | jq .blob)" '{
+          repo: $did,
+          collection: "sh.tangled.repo.artifact",
+          validate: false,
+          record: {
+            "$type": "sh.tangled.repo.artifact",
+            tag: {"$bytes": $tag},
+            name: $name,
+            repo: $repo,
+            artifact: $blob,
+            createdAt: $created
+          }
+        }')
+
+      # create the record on the PDS
+      curl -fsS -X POST "$PDS/xrpc/com.atproto.repo.createRecord" \
+        -H "Authorization: Bearer $jwt" \
+        -H "Content-Type: application/json" \
+        -d "$record"
