@@ -96,26 +96,24 @@ func (s *Server) Serve(ctx context.Context) error {
 	go func() {
 		logger := s.logger.With("component", "delete-routine")
 		ticker := time.NewTicker(s.checkInterval)
+		defer ticker.Stop()
+		defer close(tickerShutdown)
 
-		go func() {
-			logger.Info("deleting expired files")
+		logger.Info("deleting expired files")
+		if err := s.database.DeleteExpiredBlobs(); err != nil {
+			logger.Info("error deleting expired files", "err", err)
+		}
 
-			if err := s.database.DeleteExpiredBlobs(); err != nil {
-				logger.Info("error deleting expired files", "err", err)
-			}
-
-			for range ticker.C {
+		for {
+			select {
+			case <-ticker.C:
 				if err := s.database.DeleteExpiredBlobs(); err != nil {
 					logger.Info("deletion error", "err", err)
 				}
+			case <-shutdownTicker:
+				return
 			}
-
-			close(tickerShutdown)
-		}()
-
-		<-shutdownTicker
-
-		ticker.Stop()
+		}
 	}()
 
 	shutdownEcho := make(chan struct{})
