@@ -1,112 +1,160 @@
 /* TODO */
 
 :root {
-    --background: oklch(13% 0.028 261.692);
-    --secondary: oklch(37.3% 0.034 259.733);
-    --tertiary: oklch(27.8% 0.033 256.848);
+  --background: oklch(13% 0.028 261.692);
+  --secondary: oklch(37.3% 0.034 259.733);
+  --tertiary: oklch(27.8% 0.033 256.848);
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    background-color: var(--background);
-    color: oklch(98.5% 0.002 247.839);
-    padding: 0;
-    margin: 0;
-    display: grid;
-    width: 100%;
-    height: 100dvh;
-    grid-template-columns: 0.5fr 1fr 0.5fr;
-    grid-template-areas: "a b c";
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--background);
+  color: oklch(98.5% 0.002 247.839);
+  padding: 10px;
+  margin: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: clip;
 }
 
 main {
-    display: block;
-    background-color: var(--tertiary);
-    align-self: center;
-    margin: 10px;
-    border-radius: 10px;
-    overflow: clip;
+  display: block;
+  background-color: var(--tertiary);
+  align-self: center;
+  border-radius: 10px;
+  overflow: clip;
 
-    grid-area: b;
+  grid-area: b;
 
-    & header {
-        padding-inline: 10px;
-        padding-block: 5px;
+  & header {
+    padding-inline: 10px;
+    padding-block: 5px;
 
-        margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 
-        & h1 {
-            margin-block: 0px;
-            font-size: 1.3em;
-        }
-        background-color: var(--secondary);
+    & h1 {
+      margin-block: 0px;
+      font-size: 1.3em;
     }
 
-    & .container {
-        padding-inline: 5px;
-    }
+    background-color: var(--secondary);
+  }
+
+  & .container {
+    padding-inline: 5px;
+  }
 }
+
+@media screen and (width < 600px) {
+  body {
+    display: block;
+    padding: 0;
+  }
+
+  main {
+    height: 100%;
+    border-radius: 0;
+  }
+}
+
+input,
+button {
+  font-size: 1rem;
+}
+
 datalist {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    writing-mode: vertical-lr;
-    width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  writing-mode: vertical-lr;
+  width: 200px;
 }
 
 .centre {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    align-items: center;
+  align-items: center;
 }
 
 form {
-    gap: 1rem;
+  gap: 1rem;
 }
 
 
 .time {
-    gap: .5rem;
+  gap: .5rem;
 }
 
 option {
-    padding: 0;
+  padding: 0;
 }
 
 .container {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 input[type="range"] {
-    width: 200px;
-    margin: 0;
+  width: 200px;
+  margin: 0;
 }
 
 .uploadbox {
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-    border: 2px dashed white;
-    border-radius: 5%;
-    background: rgba(0, 0, 0, 30%);
-    aspect-ratio: 1/1;
-    width: 30%;
+  border: 2px dashed white;
+  border-radius: 5%;
+  background: rgba(0, 0, 0, 30%);
+  aspect-ratio: 1/1;
+  width: 40%;
+
+  &:has(:is(input:focus, label:focus)) {
+    outline: 3px solid white;
+    outline-offset: 4px;
+  }
+
+  &:has(input[type=file]:valid) {
+    border-color: green;
 
     & label {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      font-size: 0;
 
-        width: 100%;
-        height: 100%;
+      &::after {
+        content: "File ready to upload";
+        font-size: 16px;
+      }
     }
-    & input[type="file"] {
-        display: none; /* hide underlying component*/
-    }
+  }
+
+  & label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  & input[type="file"] {
+    display: none;
+    /* hide underlying component*/
+  }
 }
 
-.footer {
-    margin-bottom: .5rem;    
+footer {
+  margin-bottom: .5rem;
+  text-align: center;
 }
