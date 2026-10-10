@@ -12,7 +12,7 @@ environment:
   CGO_ENABLED: 1
   ATCR_USER: bunniesin.space
 
-virtualization:
+virtualisation:
   docker: true
 
 when:
