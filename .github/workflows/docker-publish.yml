@@ -3,7 +3,7 @@ name: Publish image on GHCR
 on:
   push:
     branches: [ "master" ]
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
