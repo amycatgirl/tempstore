@@ -17,8 +17,7 @@ virtualisation:
 
 when:
   - event: ["push"]
-    branch: ["master"]
-    tag: ["v*.*.*"]
+    tag: ["v*"]
 
 cache:
   - key: go-mod

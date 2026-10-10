@@ -10,7 +10,6 @@ environment:
 
 when:
   - event: ["push"]
-    branch: ["master"]
     tag: ["v*"]
 
 cache:
