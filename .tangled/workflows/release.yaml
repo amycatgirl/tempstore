@@ -1,0 +1,53 @@
+engine: "microvm"
+image: nixos
+
+dependencies:
+  - go
+  - gcc
+  - curl
+  - jq
+  - git
+
+environment:
+  CGO_ENABLED: 1
+
+when:
+  - tag: ["v*"]
+
+steps:
+  - name: build release binary
+    command: |
+      set -euo pipefail
+      mkdir -p dist
+      go build -trimpath -ldflags="-s -w" -o "dist/tempstore-$TANGLED_REF_NAME" ./cmd/tempstore
+  - name: publish release artifact to Tangled
+    command: |
+      set -euo pipefail
+      PDS="https://eurosky.social"
+      ATP_IDENTIFIER="did:plc:gijpvbkdbr56kazbdjhfvb3d"
+      ARTIFACT_PATH="dist/tempstore-$TANGLED_REF_NAME"
+      ARTIFACT_NAME="tempstore-$TANGLED_REF_NAME"
+
+      session=$(curl -fsS -X POST "$PDS/xrpc/com.atproto.server.createSession" \
+        -H "Content-Type: application/json" \
+        -d "{\"identifier\":\"$ATP_IDENTIFIER\",\"password\":\"$ATP_APP_PASSWORD\"}")
+      jwt=$(echo "$session" | jq -r .accessJwt)
+      did=$(echo "$session" | jq -r .did)
+
+      blob=$(curl -fsS -X POST "$PDS/xrpc/com.atproto.repo.uploadBlob" \
+        -H "Authorization: Bearer $jwt" \
+        -H "Content-Type: application/octet-stream" \
+        --data-binary @"$ARTIFACT_PATH")
+
+      tag_hash=$(git rev-parse "$TANGLED_REF_NAME^{tag}")
+      tag_bytes=$(printf '%s' "$tag_hash" | xxd -r -p | base64 | tr -d '=')
+      record=$(jq -n \
+        --arg did "$did" --arg tag "$tag_bytes" --arg name "$ARTIFACT_NAME" \
+        --arg repo "$TANGLED_REPO_URL" --arg created "$(date -Iseconds)" \
+        --argjson blob "$(echo "$blob" | jq .blob)" '{
+          repo: $did, collection: "sh.tangled.repo.artifact", validate: false,
+          record: {"$type": "sh.tangled.repo.artifact", tag: {"$bytes": $tag},
+            name: $name, repo: $repo, artifact: $blob, createdAt: $created}
+        }')
+      curl -fsS -X POST "$PDS/xrpc/com.atproto.repo.createRecord" \
+        -H "Authorization: Bearer $jwt" -H "Content-Type: application/json" -d "$record"

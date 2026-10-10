@@ -4,6 +4,7 @@ image: nixos
 dependencies:
   - go
   - docker
+  - cosign
   - gcc
   - curl
 
@@ -48,3 +49,7 @@ steps:
       docker build -t "tempstore:$TANGLED_REF_NAME" -t "$image_tagged" -t "$image_latest"
       docker push "$image_tagged"
       docker push "$image_latest"
+
+      # Sign both registry references with the configured Cosign key.
+      cosign sign --yes --key env://COSIGN_PRIVATE_KEY "$image_tagged"
+      cosign sign --yes --key env://COSIGN_PRIVATE_KEY "$image_latest"
