@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"html/template"
 	"io"
 	"log/slog"
@@ -90,6 +91,12 @@ func New(args *Args) (*Server, error) {
 
 // TODO: We want to also pass a context here, since we are going to have tasks running in the background as well!!
 func (s *Server) Serve(ctx context.Context) error {
+	if _, err := os.Stat("files/"); errors.Is(err, os.ErrNotExist) || errors.Is(err, os.ErrPermission) {
+		if err := os.Mkdir("files", 0755); err != nil {
+			panic(err)
+		}
+	}
+
 	shutdownTicker := make(chan struct{})
 	tickerShutdown := make(chan struct{})
 
