@@ -42,7 +42,7 @@ steps:
   - name: "build and push to atcr"
     command: |
       set -euo pipefail
-      echo "$ATCR_SECRET" | docker login atcr.io -u "$ATCR_USER" --password-stdin
+      echo "$ATP_APP_PASSWORD" | docker login atcr.io -u "$ATCR_USER" --password-stdin
 
       image_tagged="atcr.io/$ATCR_USER/tempstore:$TANGLED_REF_NAME"
       image_latest="atcr.io/$ATCR_USER/tempstore:latest"
